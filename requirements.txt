@@ -1,2 +1,3 @@
 geopandas
+ipykernel
 streamlit
