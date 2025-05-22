@@ -4,4 +4,10 @@
 
 ```
 conda create -n spotnov_env -c conda-forge python=3.13.0 --file requirements.txt --yes
-````
+```
+
+## run project
+
+```
+streamlit run app.py
+```
