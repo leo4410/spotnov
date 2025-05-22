@@ -1,10 +1,8 @@
 import streamlit as st
 from functions import boundingbox
-
 from loaders import overpass
 from pages import statistics
 from pages import search
-
 
 st.write("Spotnov")
 
@@ -21,6 +19,3 @@ if "map_result" in st.session_state:
     
 statistics.title()
 statistics.example_view()
-
-bb = boundingbox.calcBoundingBox("Basel",30)
-

@@ -2,22 +2,20 @@ import geopandas as gpd
 import overpy
 from shapely.geometry import Point
 
-def requestApi(filters, boundingbox):
+def getMarkers(filters, boundingbox):
     
-    start_string="node"
-    end_string=";out;"
+    filter_string = "("
+    
+    for filter in filters:
+       filter_string = filter_string + "node" + filter + boundingbox + ";"
+       
+    filter_string = filter_string + ");out body;"
+    
     api = overpy.Overpass()
-
-    result_nodes = api.query(start_string + filters + boundingbox + end_string).nodes
+    nodes = api.query(filter_string).nodes
     
-    return result_nodes
-    
-
-def getFireplaces(filters, boundingbox):
-    fireplaceNodes = requestApi(filters, boundingbox)
-    fireplace_list = []
-
-    for node in fireplaceNodes:
+    markers_list = []
+    for node in nodes:
         point = Point(node.lon, node.lat)  
 
         entry = {
@@ -26,8 +24,8 @@ def getFireplaces(filters, boundingbox):
             # add further logic
         }
         
-        fireplace_list.append(entry)
+        markers_list.append(entry)
         
-    fireplace_df = gpd.GeoDataFrame(fireplace_list, crs="EPSG:4326") 
+    markers_df = gpd.GeoDataFrame(markers_list, crs="EPSG:4326") 
     
-    return fireplace_df
+    return markers_df
