@@ -1,4 +1,7 @@
 import streamlit as st
+from loaders import overpass
+from functions import boundingbox
+import pandas as pd
 
 
 def title():
@@ -9,20 +12,36 @@ def search_interface():
 
     st.title("Objektsuche")
 
-    search_area = st.text_input("Suchgebiet einstellen")
+    label_dict = {
+        1: "Bänke",
+        2: "Feuerstellen",
+        3: "Fussballplätze"
+    }
 
-    search_radius = st.slider("Stelle den Radius ein", 0, 100, step=10)
+    tag_dict = {
+        1: """["amenity"="bench"]""",
+        2: """["leisure"="firepit"]""",
+        3: """["leisure"="pitch"]"""
+    }
 
-    tag_mapping = {"Bänke" : "Bench",
-                   "Feuerstellen" : "firepit",
-                   "Fussballplätze" : "pitch"}
+    with st.form("search_form"):
 
-    st.markdown("Wähle das Suchobjekt")
-    with st.container(border=True):
-        search_option_de = st.multiselect("Objekt", tag_mapping.keys(), default=list(tag_mapping.keys())) #nimmt alle ausgewählten Keys (also das Objekt in Deutsch) und speichert diese in die Variabel
+        location_input = st.text_input("Suchgebiet einstellen")
+        radius_input = st.slider("Stelle den Radius ein", 0, 100, step=10)
+        option_input = st.multiselect("Suchobjekt wählen", options=label_dict.keys(),default=label_dict.keys(),format_func=lambda x: label_dict[x]) #nimmt alle ausgewählten Keys (also das Objekt in Deutsch) und speichert diese in die Variabel
+      
+        submitted = st.form_submit_button("Suche starten!")
 
-    if st.button("Suche starten!"):
-        overpass_tag = [tag_mapping[de] for de in search_option_de] #Erstellt eine Liste mit den Values aus tag_mapping, wobei "de" die Keys darstellen, die aus der search_option_de stammen
-        search(search_area, search_radius, tag_mapping(overpass_tag))
+        if submitted:
 
-    #st.map()
+            request = ""
+
+            for e in option_input:
+                st.write(e)
+                request = request+f"{tag_dict[e]}"
+
+            st.write(request)
+            
+            gdf=overpass.getFireplaces(request, boundingbox.calcBoundingBox(str(location_input), float(radius_input)) )
+
+            st.session_state["map_result"] = gdf

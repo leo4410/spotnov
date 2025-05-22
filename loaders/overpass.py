@@ -4,10 +4,10 @@ from shapely.geometry import Point
 
 def requestApi(filters, boundingbox):
     
-    start_string="node "
+    start_string="node"
     end_string=";out;"
     api = overpy.Overpass()
-    
+
     result_nodes = api.query(start_string + filters + boundingbox + end_string).nodes
     
     return result_nodes
