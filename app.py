@@ -9,6 +9,8 @@ from pages import search
 st.write("Spotnov")
 
 search.title()
+search.search_interface()
+
 statistics.title()
 statistics.example_view()
 
