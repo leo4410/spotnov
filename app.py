@@ -1,10 +1,6 @@
 import streamlit as st
-from functions import analysis, boundingbox
-from loaders import overpass
 from pages import statistics
 from pages import search
-from streamlit_folium import st_folium
-from functions.nearest_fireplace import create_fireplace_map
 
 st.write("Spotnov")
 Logo = "data/Logo.jpg"
@@ -70,33 +66,24 @@ statistics.title()
 ### Anzahl Feuerstellen in Box
 ### ---------------------------
 if "map_result" and "location_coords" and "search_radius" and "bounding_box" in st.session_state:
-    
     gdf = st.session_state["map_result"]
-    location_coords = st.session_state["location_coords"]
-    search_radius = st.session_state["search_radius"]
-    bounding_box = st.session_state["bounding_box"]
-    anzahl = analysis.countMarkersInBoundingbox(gdf)
-    st.write(f"Anzahl Feuerstellen: *{anzahl}*")
+    statistics.markerCountWidget(gdf)
 
 ### ---------------------------
 ### Anzahl Feuerstellen in Box
 ### ---------------------------
 if "map_result" and "location_coords" and "search_radius" and "bounding_box" in st.session_state:
-    
     gdf = st.session_state["map_result"]
     bounding_box = st.session_state["bounding_box"]
-    density = analysis.calculateFireplaceDensity(gdf, bounding_box)
-    st.write(f"Anzahl Feuerstellen pro Kilometer: *{density:.2f}%*")
-
+    statistics.markerDensityWidget(gdf, bounding_box)
 
 ### ---------------------------------
 ### Distanz zur nächsten Feuerstellen
 ### ---------------------------------
 if "map_result" and "location_coords" and "search_radius" and "bounding_box" in st.session_state:
-    
     gdf = st.session_state["map_result"]
     bounding_box = st.session_state["bounding_box"]
-    create_fireplace_map(gdf, bounding_box)
+    statistics.markerDistanceWidget(gdf, bounding_box)
 
 
 if "map_result" and "location_coords" and "search_radius" and "bounding_box" in st.session_state:
