@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
-from functions import boundingbox, coordinates
-from functions import places
+from functions import boundingbox, places
 from loaders import overpass
 import folium
 from streamlit_folium import st_folium
@@ -10,7 +9,6 @@ def title():
     st.write("Suche")
 
 def search_map():
-
     location_coordinates = ()
 
     if "last_click" not in st.session_state:
@@ -47,7 +45,7 @@ def search_map():
 
     with st.form("set_form"):
 
-        radius_input = st.slider("Stelle den Radius ein", 0, 20, step=2)
+        radius_input = st.slider("Stelle den Radius ein", 0, 20, step=1)
         option_input = st.multiselect("Suchobjekt wählen",options=options_dict.keys(),default=options_dict.keys(),format_func=lambda x: options_dict[x]["label"] ) #nimmt alle ausgewählten Keys (also das Objekt in Deutsch) und speichert diese in die Variabel
       
         submitted = st.form_submit_button("Suche starten!")
@@ -68,8 +66,6 @@ def search_map():
             st.session_state["bounding_box"] = bounding_box
             st.session_state["search_radius"] = radius_input
 
-
-
 def search_interface():
 
     st.title("Objektsuche")
@@ -83,7 +79,7 @@ def search_interface():
     with st.form("search_form"):
 
         location_input = st.text_input("Suchgebiet einstellen")
-        radius_input = st.slider("Stelle den Radius ein", 0, 20, step=2)
+        radius_input = st.slider("Stelle den Radius ein", 0, 20, step=1)
         option_input = st.multiselect("Suchobjekt wählen",options=options_dict.keys(),default=options_dict.keys(),format_func=lambda x: options_dict[x]["label"] ) #nimmt alle ausgewählten Keys (also das Objekt in Deutsch) und speichert diese in die Variabel
       
         submitted = st.form_submit_button("Suche starten!")
@@ -99,7 +95,6 @@ def search_interface():
             bounding_box = boundingbox.calcBoundingBox(location_coords, float(radius_input))
             
             gdf=overpass.getMarkers(request, bounding_box )
-            
             st.session_state["map_result"] = gdf
             st.session_state["location_coords"] = location_coords
             st.session_state["bounding_box"] = bounding_box

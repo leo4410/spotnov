@@ -1,13 +1,7 @@
 import streamlit as st
 from functions import analysis
 import pydeck as pdk
-
-import folium
-from folium import plugins
-import geopandas as gpd
-import branca.colormap as cm
 import streamlit as st
-from streamlit_folium import folium_static
 
 def title():
     st.write("Statistik")
