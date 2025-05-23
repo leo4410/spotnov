@@ -1,7 +1,5 @@
 import streamlit as st
-from functions import boundingbox
-from functions.anzahl_fireplace import count_fireplaces_in_bbox
-from functions.dichte_anzahl_fireplace import density_fireplaces_in_bbox
+from functions import analysis, boundingbox
 from loaders import overpass
 from pages import statistics
 from pages import search
@@ -77,8 +75,8 @@ if "map_result" and "location_coords" and "search_radius" and "bounding_box" in 
     location_coords = st.session_state["location_coords"]
     search_radius = st.session_state["search_radius"]
     bounding_box = st.session_state["bounding_box"]
-    anzahl = count_fireplaces_in_bbox(gdf)
-    st.write(f"Anzahl Feuerstellen in der Box: *{anzahl}*")
+    anzahl = analysis.countMarkersInBoundingbox(gdf)
+    st.write(f"Anzahl Feuerstellen: *{anzahl}*")
 
 ### ---------------------------
 ### Anzahl Feuerstellen in Box
@@ -87,8 +85,8 @@ if "map_result" and "location_coords" and "search_radius" and "bounding_box" in 
     
     gdf = st.session_state["map_result"]
     bounding_box = st.session_state["bounding_box"]
-    density = density_fireplaces_in_bbox(gdf, bounding_box)
-    st.write(f"Dichte der Feuerstellen: *{density:.2f}%*")
+    density = analysis.calculateFireplaceDensity(gdf, bounding_box)
+    st.write(f"Anzahl Feuerstellen pro Kilometer: *{density:.2f}%*")
 
 
 ### ---------------------------------

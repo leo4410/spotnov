@@ -3,12 +3,9 @@
 
 from streamlit_folium import st_folium
 import re
-from shapely.geometry import Point, LineString
 import geopandas as gpd
 from geopy.distance import distance
-from loaders.overpass import getMarkers
 import folium
-import streamlit as st
 
 def create_fireplace_map(nodes, bbox):
     """
@@ -39,20 +36,18 @@ def create_fireplace_map(nodes, bbox):
     #in der spaeter die berechneten Entfernungen zum Mittelpunkt abgespeichert werden.
 
     
-    for node in nodes.itertuples():
-        distance((center_lat, center_lon), (node.lat, node.lon)).km
+    for idx, row in nodes.iterrows():
+        nodes.loc[idx, "dist"] = distance((center_lat, center_lon), (row.lat, row.lon)).km
 
-    best_id = nodes['dist'].idxmin()
+    best_id = nodes["dist"].idxmin()
     best = nodes.loc[best_id]
 
-    dist_km = distance((center_lat, center_lon), (best.lat, best.lon)).km
+    dist_km = nodes.loc[best_id, "dist"]
 
     #Der Code geht jede Feuerstelle in der Tabelle durch und misst die direkte Luftlinie vom zuvor ermittelten Kartenmittelpunkt bis zur jeweiligen Feuerstelle; das Ergebnis wird sofort in der Tabelle als Distanzwert gespeichert.
     #Sobald alle Distanzen eingetragen sind, durchsucht der Code diese Werte und findet die geringste Entfernung, um so die am nächsten gelegene Feuerstelle auszuwählen.
     #Mit dieser Information kann die Funktion dann gezielt genau diesen Punkt auf der Karte markieren und die Distanz anzeigen.
 
-
-   
     m = folium.Map(location=[center_lat, center_lon], zoom_start=13)
 
    

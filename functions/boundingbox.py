@@ -1,6 +1,4 @@
 from geopy.distance import distance
-from geopy.geocoders import Nominatim
-from shapely.geometry import box
 
 def calcBoundingBox(place, radius:float):
     lat, lon = place[0], place[1]
