@@ -29,9 +29,9 @@ if "map_result" in st.session_state:
 
     # Farbe nach Typ definieren (falls nicht vorhanden: grau)
     color_map = {
-        "firepit": [0, 0, 255],
-        "bench": [0, 255, 0],
-        "pitch": [255, 0, 0],
+        "firepit": [0, 255, 255],
+        "bench": [255, 255, 0],
+        "pitch": [180, 0, 0],
         None: [128, 128, 128]
     }
     gdf["color"] = gdf.get("typ", None).apply(lambda x: color_map.get(x, [128, 128, 128]))
