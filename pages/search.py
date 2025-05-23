@@ -20,45 +20,32 @@ def search_interface():
     } 
 
 
-   # Sessionstate initialisieren
     if "last_click" not in st.session_state:
         st.session_state["last_click"] = None
 
-    # Kartenmittelpunkt bestimmen
+
     center = st.session_state["last_click"] or {"lat": 68.0, "lng": 2.0}
 
-    # Neue Karte vorbereiten
+
     m = folium.Map(location=[center["lat"], center["lng"]], zoom_start=13)
 
-    # Marker hinzufügen, falls Koordinaten vorhanden
+
     if st.session_state["last_click"]:
         lat = st.session_state["last_click"]["lat"]
         lon = st.session_state["last_click"]["lng"]
         folium.Marker(location=[lat, lon], popup="Letzter Klick").add_to(m)
 
-    # Karte anzeigen + Klick auswerten
+
     output = st_folium(m, height=500, width=700)
     clicked = output.get("last_clicked")
 
-    # Klick speichern und App neu laden
+
     if clicked:
         st.session_state["last_click"] = clicked
         st.rerun()
 
 
-
-
-
-
-    
-
-
-
-
-
-
-
-
+        
 
 
     with st.form("search_form"):
@@ -90,4 +77,6 @@ def search_interface():
             gdf=overpass.getMarkers(request, boundingbox.calcBoundingBox(str(location_input), float(radius_input)) )
 
             st.session_state["map_result"] = gdf
+
+    return st.session_state["last_click"]
             
