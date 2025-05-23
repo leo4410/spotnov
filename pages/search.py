@@ -8,7 +8,6 @@ from streamlit_folium import st_folium
 def title():
     st.write("Suche")
 
-
 def search_interface():
 
     st.title("Objektsuche")
@@ -23,10 +22,10 @@ def search_interface():
         st.session_state["last_click"] = None
 
 
-    center = st.session_state["last_click"] or {"lat": 68.0, "lng": 2.0}
+    center = st.session_state["last_click"] or {"lat":47.0502 , "lng": 8.3093}
 
 
-    m = folium.Map(location=[center["lat"], center["lng"]], zoom_start=13)
+    m = folium.Map(location=[center["lat"], center["lng"]], zoom_start=13, attr='Mapbox',name='Mapbox Dark',tiles="CartoDB dark_matter")
 
 
     if st.session_state["last_click"]:
@@ -45,6 +44,7 @@ def search_interface():
 
     with st.form("search_form"):
 
+      
         location_input = st.text_input("Suchgebiet einstellen")
         radius_input = st.slider("Stelle den Radius ein", 0, 20, step=2)
         option_input = st.multiselect("Suchobjekt wählen",options=options_dict.keys(),default=options_dict.keys(),format_func=lambda x: options_dict[x]["label"] ) #nimmt alle ausgewählten Keys (also das Objekt in Deutsch) und speichert diese in die Variabel
