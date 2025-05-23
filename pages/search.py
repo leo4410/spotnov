@@ -25,23 +25,23 @@ def search_interface():
 
 
     if "last_click" not in st.session_state:
-        st.session_state["last_click"] = None
+        st.session_state["last_click"] = None # Initalisiert st.session_state["last_click"] mit None, wenn noch nicht vorhanden
 
 
-    center = st.session_state["last_click"] or {"lat": 68.0, "lng": 2.0}
+    center = st.session_state["last_click"] or {"lat": 68.0, "lng": 2.0} # Definiert ein center- Point, mit Werten aus "last_click" oder default- Werten
 
 
-    m = folium.Map(location=[center["lat"], center["lng"]], zoom_start=13)
+    m = folium.Map(location=[center["lat"], center["lng"]], zoom_start=13) # Generiert eine leere Karte mit dem zuvor definierten Zentrum
 
 
-    if st.session_state["last_click"]:
+    if st.session_state["last_click"]: # Wenn "Klick" auf Karte erfolgt, werden lat/lon extrahiert und ein Marker zu Karte hinzugefügt
         lat = st.session_state["last_click"]["lat"]
         lon = st.session_state["last_click"]["lng"]
         folium.Marker(location=[lat, lon], popup="Letzter Klick").add_to(m)
 
 
-    output = st_folium(m, height=500, width=700)
-    clicked = output.get("last_clicked")
+    output = st_folium(m, height=500, width=700) # Karte wird in streamlit eingebunden und als Dict. (u.A. mit key "last_click") in output gespeichert
+    clicked = output.get("last_clicked") 
 
 
     if clicked:
