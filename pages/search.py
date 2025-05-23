@@ -1,8 +1,9 @@
-import pandas as pd
+import folium
+import pydeck as pdk
 import streamlit as st
+
 from functions import boundingbox, places
 from loaders import overpass
-import folium
 from streamlit_folium import st_folium
 
 def title():
@@ -66,6 +67,7 @@ def search_map():
             st.session_state["bounding_box"] = bounding_box
             st.session_state["search_radius"] = radius_input
 
+
 def search_interface():
 
     st.title("Objektsuche")
@@ -99,3 +101,48 @@ def search_interface():
             st.session_state["location_coords"] = location_coords
             st.session_state["bounding_box"] = bounding_box
             st.session_state["search_radius"] = radius_input
+
+
+def search_result(gdf):
+    gdf["lat"] = gdf.geometry.y
+    gdf["lon"] = gdf.geometry.x
+
+    color_map = {
+        "firepit": [0, 255, 255],
+        "bench": [255, 255, 0],
+        "pitch": [180, 0, 0],
+        None: [128, 128, 128]
+    }
+
+    gdf["color"] = gdf.get("typ", None).apply(lambda x: color_map.get(x, [128, 128, 128]))
+    gdf["name"] = gdf.get("name", None)
+
+    # Layer definieren
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=gdf,
+        get_position='[lon, lat]',
+        get_fill_color="color",
+        get_radius=70,
+        pickable=True
+    )
+
+    # View definieren
+    view_state = pdk.ViewState(
+        latitude=gdf["lat"].mean(),
+        longitude=gdf["lon"].mean(),
+        zoom=13
+    )
+
+    # Tooltip definieren
+    tooltip = {
+        "html": "<b>{id}</b><br>Typ: {typ}",
+        "style": {"backgroundColor": "white", "color": "black"}
+    }   
+
+    # Karte anzeigen mit Hover
+    st.pydeck_chart(pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        tooltip=tooltip
+    ))
