@@ -20,6 +20,10 @@ def search_interface():
     } 
 
 
+
+
+
+
     if "last_click" not in st.session_state:
         st.session_state["last_click"] = None
 
@@ -50,21 +54,10 @@ def search_interface():
 
     with st.form("search_form"):
 
-
-
-
-
         location_input = st.text_input("Suchgebiet einstellen")
         radius_input = st.slider("Stelle den Radius ein", 0, 20, step=1)
         option_input = st.multiselect("Suchobjekt wählen",options=options_dict.keys(),default=options_dict.keys(),format_func=lambda x: options_dict[x]["label"] ) #nimmt alle ausgewählten Keys (also das Objekt in Deutsch) und speichert diese in die Variabel
       
-
-
-
-
-
-        
-
         submitted = st.form_submit_button("Suche starten!")
 
         if submitted:
@@ -78,5 +71,15 @@ def search_interface():
 
             st.session_state["map_result"] = gdf
 
-    return st.session_state["last_click"]
+
+
+
+
+    if st.session_state["last_click"]:
+        return (
+            st.session_state["last_click"]["lat"],
+            st.session_state["last_click"]["lng"]
+        )
+    else:
+        return None, None
             
