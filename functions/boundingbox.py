@@ -2,11 +2,8 @@ from geopy.distance import distance
 from geopy.geocoders import Nominatim
 from shapely.geometry import box
 
-def calcBoundingBox(place:str, radius:float):
-    geolocator = Nominatim(user_agent="bbox_calc", timeout=5)
-    location = geolocator.geocode(place)
-    
-    lat, lon = location.latitude, location.longitude
+def calcBoundingBox(place, radius:float):
+    lat, lon = place[0], place[1]
 
     north = distance(kilometers=radius).destination((lat, lon), bearing=0)
     south = distance(kilometers=radius).destination((lat, lon), bearing=180)

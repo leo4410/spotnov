@@ -14,6 +14,7 @@ Logo = "data/Logo.jpg"
 st.image(Logo,width=400)
     
 search.title()
+search.search_map()
 search.search_interface()
 
 if "map_result" in st.session_state:
@@ -70,7 +71,7 @@ if "map_result" in st.session_state:
 
 statistics.title()
 
-bb = boundingbox.calcBoundingBox("Gelterkinden",4)
+bb = boundingbox.calcBoundingBox((47.466678839829044, 7.851053722331402),4)
 
 gdf = overpass.getMarkers(['["leisure"="firepit"]'], bb)
 
