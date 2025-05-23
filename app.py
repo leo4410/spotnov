@@ -9,8 +9,6 @@ from pages import search
 from streamlit_folium import st_folium
 from functions.nearest_fireplace import create_fireplace_map
 
-
-
 st.write("Spotnov")
 
 search.title()
@@ -24,9 +22,7 @@ if "map_result" in st.session_state:
 
     st.map(gdf, latitude="lat", longitude="lon")
 
-
 statistics.title()
-statistics.example_view()
 
 bb = boundingbox.calcBoundingBox("Gelterkinden",4)
 
@@ -75,3 +71,12 @@ else:
     #import uuid
     #st_folium(m, width=700, height=500, key=str(uuid.uuid4()))
     st_folium(m, width=700, height=500, key="nearest_fireplace_map")
+
+
+if "map_result" and "location_coords" and "search_radius" and "bounding_box" in st.session_state:
+
+    gdf = st.session_state["map_result"]
+    location_coords = st.session_state["location_coords"]
+    search_radius = st.session_state["search_radius"]
+    bounding_box = st.session_state["bounding_box"]
+    gdf = statistics.nearest_place(gdf, location_coords, search_radius, bounding_box)

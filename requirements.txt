@@ -1,6 +1,9 @@
+fiona
 geopandas
-ipykernel
-streamlit
-overpy
 geopy
-streamlit-folium
+ipykernel
+networkx
+osmnx
+overpy
+streamlit
+streamlit_folium
