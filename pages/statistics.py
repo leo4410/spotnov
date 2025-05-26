@@ -9,7 +9,7 @@ from helpers import colorScaleHelper
 from streamlit_folium import st_folium
 
 def title():
-    st.write("Statistik")
+    st.header("Statistik")
 
 
 def markerCountWidget(gdf):
@@ -28,6 +28,8 @@ def markerDistanceWidget(gdf, bbox):
     Baut eine Folium-Karte mit Zentrum, nächster Feuerstelle und Luftlinien-Linie.
     Gibt None zurück, wenn keine Feuerstellen in der Box gefunden werden.
     """
+    
+    st.subheader("Nächster Punkt (Luftlinie)")
 
     #hier werden die Feuerstellen geladen -->liefert ein GeodataFrame mit allen OSM-Nodes im Rechteck
     nums = list(map(float, re.findall(r"[-+]?\d*\.\d+|\d+", bbox)))
@@ -84,6 +86,8 @@ def markerDistanceWidget(gdf, bbox):
 
 
 def markerShortestDistanceWidget(gdf, locaion_coords, search_radius, boundingbox):
+    
+    st.subheader("Fussweg in Minuten")
     
     # Reisezeiten zu den Markers berechnen
     gdf = analysis.calculate_shortest_distance(gdf, locaion_coords, search_radius, boundingbox)
