@@ -22,3 +22,23 @@ def getMarkers(filters, boundingbox):
         markers_list.append(entry)
     markers_df = gpd.GeoDataFrame(markers_list, crs="EPSG:4326")
     return markers_df
+
+def getAllFirepits():
+    
+    filter_string = '[out:json][timeout:60];area["ISO3166-1"="CH"][admin_level=2];(node["leisure"="firepit"](area););out center;'
+    
+    api = overpy.Overpass()
+    nodes = api.query(filter_string).nodes
+    
+    markers_list = []
+    for node in nodes:
+        point = Point(node.lon, node.lat)
+
+        entry = {
+            "id": node.id,
+            "geometry": point,
+            "typ": node.tags.get("leisure") or node.tags.get("amenity")
+        }
+        markers_list.append(entry)
+    markers_df = gpd.GeoDataFrame(markers_list, crs="EPSG:4326")
+    return markers_df

@@ -1,6 +1,5 @@
 import streamlit as st
-from pages import statistics
-from pages import search
+from pages import informations, statistics, search 
 
 st.write("Spotnov")
 Logo = "data/Logo.jpg"
@@ -53,3 +52,6 @@ if "map_result" and "location_coords" and "search_radius" and "bounding_box" in 
     search_radius = st.session_state["search_radius"]
     bounding_box = st.session_state["bounding_box"]
     gdf = statistics.markerShortestDistanceWidget(gdf, location_coords, search_radius, bounding_box)
+    
+informations.title()
+informations.cantons()

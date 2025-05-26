@@ -98,7 +98,7 @@ def markerShortestDistanceWidget(gdf, locaion_coords, search_radius, boundingbox
     gdf['norm_time'] = (gdf['travel_time'] - min_time) / (max_time - min_time)
 
     # Farbskala berechnen und hinzufügen
-    gdf['color'] = gdf['norm_time'].apply(colorScaleHelper.calculateColorScale)
+    gdf['color'] = gdf['norm_time'].apply(lambda x: colorScaleHelper.calculateColorScale(x, True))
 
     # Layer definieren
     layer = pdk.Layer(
