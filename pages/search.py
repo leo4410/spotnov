@@ -10,33 +10,28 @@ def title():
     st.write("Suche")
 
 def search_map():
-    location_coordinates = ()
-
+    
     if "last_click" not in st.session_state:
         st.session_state["last_click"] = None
-
-    center = st.session_state["last_click"] or {"lat":47.0502 , "lng": 8.3093}
-    m = folium.Map(location=[center["lat"], center["lng"]], zoom_start=13, attr='Mapbox',name='Mapbox Dark',tiles="CartoDB dark_matter")
-
+    
     if st.session_state["last_click"]:
         lat = st.session_state["last_click"]["lat"]
         lon = st.session_state["last_click"]["lng"]
-        folium.Marker(location=[lat, lon], popup="Letzter Klick").add_to(m)
+    else:
+        lat=47.53467271324595
+        lon= 7.6424476610894105
+        
+    location_coordinates = (lat,lon)
 
+    m = folium.Map(location=[lat, lon], zoom_start=13, attr='Mapbox',name='Mapbox Dark',tiles="CartoDB dark_matter")
+    folium.Marker(location=[lat, lon], popup="Letzter Klick").add_to(m)
+            
     output = st_folium(m, height=500, width=700)
     clicked = output.get("last_clicked")
 
     if clicked:
         st.session_state["last_click"] = clicked
         st.rerun()
-
-    # 7. Koordinaten ausgeben
-    if st.session_state["last_click"]:
-        lat = st.session_state["last_click"]["lat"]
-        lon = st.session_state["last_click"]["lng"]
-        location_coordinates = (lat,lon)
-    else:
-        st.info("Klicke auf die Karte, um Koordinaten zu wählen.")
 
     options_dict = {
         1: {"label": "Bänke", "tag": '["amenity"="bench"]'},
